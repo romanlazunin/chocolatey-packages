@@ -1,6 +1,7 @@
-import-module au
+﻿Import-Module Chocolatey-AU
 
 $releases = 'https://rubyinstaller.org/downloads/archives/'
+$fixBelowVersion = '3.1.3'
 
 function global:au_SearchReplace {
   @{
@@ -29,23 +30,28 @@ function GetStreams() {
   # Temporarily limit the amount of URLs to use until we have at least
   # one approved version. Then slowly increase the limit so we do not
   # overwhelm anything.
-  $x64releaseUrls = $releaseUrls | ? href -match $re64 | select -First 3
+  $x64releaseUrls = $releaseUrls | Where-Object href -match $re64 | Select-Object -First 3
 
-  $x64releaseUrls | % {
-    $version = $_ -replace '\-([\d]+)', '.$1' -replace 'rubyinstaller.' -replace 'ruby.' -split '/' | select -Last 1 -Skip 1
+  $x64releaseUrls | ForEach-Object {
+    $version = $_ -replace '\-([\d]+)', '.$1' -replace 'rubyinstaller.' -replace 'ruby.' -split '/' | Select-Object -Last 1 -Skip 1
     if ($version -match '[a-z]') { Write-Host "Skipping prerelease: '$version'"; return }
     $versionTwoPart = $version -replace '([\d]+\.[\d]+).*', "`$1"
 
     if ($streams.$versionTwoPart) { return }
 
     $url64 = $_ | Select-Object -ExpandProperty href
-    $url32 = $releaseUrls | ? href -notmatch $re64 | ? href -match $version | Select-Object -ExpandProperty href
+    $url32 = $releaseUrls | Where-Object href -notmatch $re64 | Where-Object href -match $version | Select-Object -ExpandProperty href
 
     if (!$url32 -or !$url64) {
       Write-Host "Skipping due to missing installer: '$version'"; return
     }
 
-    $streams.$versionTwoPart = @{ URL32 = $url32 ; URL64 = $url64 ; Version = Get-FixVersion -Version $version -OnlyFixBelowVersion "2.5.4" }
+    $fixBelowVersion = switch ($versionTwoPart) {
+      '3.1' { '3.1.3' }
+      default { '0.0.0' }
+    }
+
+    $streams.$versionTwoPart = @{ URL32 = $url32 ; URL64 = $url64 ; Version = Get-FixVersion -Version $version -OnlyFixBelowVersion $fixBelowVersion }
   }
 
   Write-Host $streams.Count 'streams collected'
@@ -56,7 +62,7 @@ function global:au_GetLatest {
   $download_page = Invoke-WebRequest -Uri $releases -UseBasicParsing
 
   $re = '\.7z$'
-  $releaseUrls = $download_page.links | ? href -match $re | ? { $_ -notmatch 'doc' }
+  $releaseUrls = $download_page.links | Where-Object href -match $re | Where-Object { $_ -notmatch 'doc' }
 
   @{ Streams = GetStreams $releaseUrls }
 }

@@ -1,8 +1,8 @@
 ﻿$ErrorActionPreference = 'Stop'
-$scriptDir=$toolsDir = $(Split-Path -parent $MyInvocation.MyCommand.Definition)
-. (Join-Path $scriptDir 'helper.ps1')
+$toolsDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
+. (Join-Path $toolsDir 'helper.ps1')
 
-$version = "106.0.5213.0-snapshots"
+$version = '132.0.6784.0-snapshots'
 $hive = "hkcu"
 $chromium_string = "\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Chromium"
 $Chromium = $hive + ":" + $chromium_string
@@ -15,17 +15,23 @@ if (Test-Path $Chromium) {
 
 $packageArgs = @{
   packageName   = 'chromium'
-  file          = "$toolsdir\chromium_x32.exe"
+  url           = 'https://storage.googleapis.com/chromium-browser-snapshots/Win/1370381/mini_installer.exe'
+  checksum      = '1D57D236616A42712D33CCF92E1A094442BD6F0BC9978113D1DCE6F145BC25FB'
+  checksumType  = 'sha256'
   file64        = "$toolsdir\chromium_x64.exe"
   fileType      = 'exe'
   silentArgs    = $silentArgs
   validExitCodes= @(0)
   softwareName  = 'Chromium'
 }
-if ( Get-CompareVersion -version $version -notation "-snapshots" -package "chromium" ) {
-Install-ChocolateyInstallPackage @packageArgs 
+if (Get-CompareVersion -version $version -notation "-snapshots" -package "chromium") {
+  if ((Get-OSArchitectureWidth 32) -or $env:ChocolateyForceX86) {
+    Install-ChocolateyPackage @packageArgs
+  } else {
+    Install-ChocolateyInstallPackage @packageArgs
+  }
 } else {
-Write-Host "Chromium $version is already installed."
+  Write-Host "Chromium $version is already installed."
 }
 # Detritus Package Cleanup
 $detritus = @("exe","tmp","ignore")

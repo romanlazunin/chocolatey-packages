@@ -2,15 +2,15 @@ VERIFICATION
 Verification is intended to assist the Chocolatey moderators and community
 in verifying that this package's contents are trustworthy.
 
-The installer have been downloaded from their official download link listed on <https://github.com/WaterfoxCo/Waterfox/releases/latest>
+The installer has been downloaded from their official download link listed on <>
 and can be verified like this:
 
-1. Download <https://github.com/WaterfoxCo/Waterfox/releases/download/G4.1.4/Install.Waterfox.exe>
+1. Download <https://cdn1.waterfox.net/waterfox/releases/G6.0.20/WINNT_x86_64/Waterfox%20Setup%20G6.0.20.exe>
 2. Then use one of the following methods to obtain the checksum
   - Use powershell function 'Get-Filehash'
   - Use chocolatey utility 'checksum.exe'
 
   checksum type: sha256
-  checksum: EE3C602085A69CACF1C336BC496552712795452CFF4857E981C2B44B3E724CAD
+  checksum: C7FB26657B6810594258377EAA5935AE65CDB0A4001DEAB29DC2A20553AD7AF8
 
 File 'LICENSE.md' is obtained from <https://github.com/MrAlex94/Waterfox/blob/1bc2fb60abf0fa173b69ca94f660115d76f09f4f/LICENSE>

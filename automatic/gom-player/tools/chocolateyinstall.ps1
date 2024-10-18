@@ -3,9 +3,9 @@
 $packageArgs = @{
   packageName    = $env:ChocolateyPackageName
   fileType       = 'exe'
-  url            = 'https://cdn.gomlab.com/gretech/player/GOMPLAYERGLOBALSETUP_NEW.EXE'
+  url            = 'https://app.gomtv.com/gom/GOMPLAYERKORSETUP.EXE'
   softwareName   = 'GOM Player'
-  checksum       = '50825f0338ca34feca1fb877260ce5095d38b7eaa564537bcfa6d89ebc80ac11'
+  checksum       = '9d350fc60909a9cbdc89c09b9be9ae0bfe72479ac369ce9af948812e7d0f51dc'
   checksumType   = 'sha256'
   silentArgs     = '/S'
   validExitCodes = @(0)

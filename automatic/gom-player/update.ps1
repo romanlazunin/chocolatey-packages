@@ -1,7 +1,7 @@
-﻿Import-Module AU
+﻿Import-Module Chocolatey-AU
 
 $releases     = 'https://www.gomlab.com/gomplayer-media-player/'
-$versions     = 'https://www.gomlab.com/ajax/update.gom?page=1&lang=eng&product=GOMPLAYER&update_lang=eng'
+$versions     = 'https://www.gomlab.com/en/gomplayer-media-player/release-note'
 $softwareName = 'GOM Player'
 
 function global:au_BeforeUpdate {
@@ -25,12 +25,12 @@ function global:au_GetLatest {
   $download_page = Invoke-WebRequest -Uri $releases -UseBasicParsing
 
   $re = '\.exe$'
-  $url32 = $download_page.Links | ? href -match $re | select -first 1 -expand href
+  $url32 = $download_page.Links | Where-Object href -match $re | Select-Object -first 1 -expand href
 
-  $verRe = '((?:\d+\.){2,3}\d+)'
+  $verRe = '(V (?:\d+\.){2,3}\d+)'
   $version_page = Invoke-WebRequest -Uri $versions -UseBasicParsing
   if ($version_page.Content -match $verRe) {
-    $version32 = $Matches[1]
+    $version32 = $Matches[1].Trim('V ')
   }
 
   @{

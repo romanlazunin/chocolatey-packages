@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Do not remove this test for UTF-8: if “Ω” doesn’t appear as greek uppercase omega letter enclosed in quotation marks, you should use an editor that supports UTF-8, not this one. -->
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>transifex-client</id>
+    <version>0.14.4.20230325</version>
+    <owners>chocolatey-community,AdmiringWorm</owners>
+    <title>[Deprecated] Transifex Command-Line Tool</title>
+    <authors>The Transifex Team</authors>
+    <projectUrl>https://www.transifex.com/</projectUrl>
+    <licenseUrl>https://github.com/transifex/transifex-client/blob/master/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectSourceUrl>https://github.com/transifex/transifex-client</projectSourceUrl>
+    <docsUrl>https://docs.transifex.com/client</docsUrl>
+    <bugTrackerUrl>https://github.com/transifex/transifex-client/issues</bugTrackerUrl>
+    <tags>deprecated</tags>
+    <summary>The Transifex Command-line Tool enables you to manage your translations within a project without the need of an elaborate UI system.</summary>
+    <!-- Do not touch the description here in the nuspec file. Description is imported during update from the Readme.md file -->
+    <description><![CDATA[### New package name: **[transifex-cli](https://community.chocolatey.org/packages/transifex-cli)**
+
+--
+`transifex-client` has been deprecated as the upstream maintainer has deprecated the Python version of the Transifex client along with the API endpoints it used.
+It exists only for backward compatibility to provide a transitional dummy package for existing users and scripts which may still use this package ID.]]></description>
+    <releaseNotes>#### New users
+
+* Please don't install this package. Install **transifex-cli** instead.
+
+#### Existing users - Updating
+
+* Updating this package will automatically install the most recent version of the **transifex-cli** chocolatey package.
+* Please update any links, dependencies, or scripts that reference this package to the new package name **transifex-cli**
+
+#### Existing users - Post-update Cleanup (optional)
+
+`choco uninstall transifex-cli --whatif`</releaseNotes>
+    <dependencies>
+      <dependency id="transifex-cli" version="1.6.5" />
+    </dependencies>
+  </metadata>
+  <files />
+</package>

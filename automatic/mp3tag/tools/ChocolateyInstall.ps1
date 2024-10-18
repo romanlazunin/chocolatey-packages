@@ -24,8 +24,8 @@ New-Item $iniFile -type file -force -value $iniContent
 $packageArgs = @{
   packageName    = $env:ChocolateyPackageName
   fileType       = 'exe'
-  file           = "$toolsPath\mp3tagv317setup.exe"
-  file64         = "$toolsPath\mp3tagv317-x64-setup.exe"
+  file           = "$toolsPath\mp3tagv327csetup.exe"
+  file64         = "$toolsPath\mp3tagv327c-x64-setup.exe"
   silentArgs     = "/S"
   validExitCodes = @(0)
 }

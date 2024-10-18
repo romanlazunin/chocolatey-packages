@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>tv-browser</id>
-    <version>4.2.6</version>
+    <version>4.2.7</version>
     <title>TV-Browser</title>
     <owners>chocolatey-community</owners>
     <authors>TV-Browser Developers</authors>
@@ -42,7 +42,6 @@
 ]]></description>
     <summary>TV-Browser is a digital TV guide.</summary>
     <releaseNotes />
-    <copyright />
     <tags>foss cross-platform tv-browser tv television guide admin</tags>
     <packageSourceUrl>https://github.com/chocolatey-community/chocolatey-packages/tree/master/automatic/tv-browser</packageSourceUrl>
     <dependencies>

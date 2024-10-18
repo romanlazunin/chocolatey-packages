@@ -7,7 +7,7 @@ location on <https://cygwin.com/>
 and can be verified by doing the following:
 
 1. Download the following:
-  32-Bit software: <https://cygwin.com/setup-x86.exe>
+  32-Bit software: NO LONGER SUPPORTED
   64-Bit software: <https://cygwin.com/setup-x86_64.exe>
 2. Get the checksum using one of the following methods:
   - Using powershell function 'Get-FileHash'
@@ -15,7 +15,7 @@ and can be verified by doing the following:
 3. The checksums should match the following:
 
   checksum type: sha256
-  checksum32: F45145ED01A8857946EAA4A0C701EA4942163B08443F801EA820188AAC8B2470
-  checksum64: 18B445DC16259BB772AAF0D32D64F9ED3166045FDC07EB9154651840D8A27752
+  checksum32: NO LONGER SUPPORTED
+  checksum64: E7815D360AB098FDD1F03F10F43F363C73A632E8866E304C72573CF1E6A0DEC8
 
 The file 'LICENSE.txt' has been obtained from <https://cygwin.com/COPYING>

@@ -1,7 +1,7 @@
 ﻿[CmdletBinding()]
 param($IncludeStream, [switch] $Force)
 
-import-module au
+Import-Module Chocolatey-AU
 
 if ($MyInvocation.InvocationName -ne '.') {
   # run the update only if the script is not sourced
@@ -11,9 +11,9 @@ if ($MyInvocation.InvocationName -ne '.') {
 function global:au_SearchReplace {
   $version = [version]$Latest.Version
   $silentArgs = if ($version -lt [version]'11.0') {
-    ',NodePerfCtrSupport'
+    ' REMOVE=NodeEtwSupport,NodePerfCtrSupport'
   }
-  $silentArgs = "/quiet ADDLOCAL=ALL REMOVE=NodeEtwSupport${silentArgs}"
+  $silentArgs = "/quiet ADDLOCAL=ALL${silentArgs}"
 
 
   @{
@@ -33,35 +33,41 @@ function global:au_SearchReplace {
 }
 
 function global:au_GetLatest {
-  $urlsToGrabMsis = @(
-    "https://nodejs.org/en/download"
-    "https://nodejs.org/en/download/current"
-  )
+  $scheduleUri = 'https://raw.githubusercontent.com/nodejs/Release/main/schedule.json'
+  $schedules = Invoke-RestMethod -Uri $scheduleUri -UseBasicParsing
 
-  $lts_page = Invoke-WebRequest -Uri "https://github.com/nodejs/Release/blob/master/README.md" -UseBasicParsing
+  $curDate = (Get-Date).Date
+  $supportedChannels = @()
+  $schedules.PSObject.Properties.Name | ForEach-Object {
+    $name = $_
+    $schedule = $schedules.$name
+    $scheduleStart = [datetime]$schedule.start
+    $scheduleEnd = [datetime]$schedule.end
+    if (($scheduleStart -le $curDate) -and ($scheduleEnd -ge $curDate)) {
+      $supportedChannels += $name
+    }
+  }
 
-  $urlsToGrabMsis += $lts_page.links | ? href -match "\/latest\-v.*\/$" | select -expand href
+  $versionsUri = 'https://nodejs.org/dist/index.json'
+  $versions = Invoke-RestMethod -Uri $versionsUri -UseBasicParsing
 
   $streams = @{ }
 
-  $urlsToGrabMsis | % {
-    $uri = $_
-    $download_page = Invoke-WebRequest -Uri $uri -UseBasicParsing
+  $supportedChannels | ForEach-Object {
+    $channel = $_
+    $latestVersion = $versions | Where-Object -FilterScript { $_.version.StartsWith($channel) } | Select-Object -First 1
+    $version = $latestVersion.version
+    $versionStrict = [version]::Parse($latestVersion.version.Substring(1))
+    if ($streams.ContainsKey($versionStrict.Major.ToString())) { return ; }
 
-    $msis = $download_page.links | ? href -match '\.msi$' | select -expand href | % {
-      if (!$_.StartsWith('http')) { return $uri + $_ } else { $_ }
-    }
+    $url32 = "https://nodejs.org/dist/$version/node-$version-x86.msi"
+    $url64 = "https://nodejs.org/dist/$version/node-$version-x64.msi"
 
-    $url32 = $msis | ? { $_ -match 'x86' } | select -first 1
-    $version = $url32 -split '\-v?' | select -last 1 -skip 1
-    $versionMajor = $version -replace '(^\d+)\..*', "`$1"
-    if ($streams.ContainsKey($versionMajor)) { return ; }
-
-    $url64 = $msis | ? { $_ -match "\-x64" } | select -first 1
-
-    if ($url32 -eq $url64) { throw "The 64bit executable is the same as the 32bit" }
-
-    $streams.Add($versionMajor, @{ Version = $version ; URL32 = $url32; URL64 = $url64 } )
+    $streams.Add($versionStrict.Major.ToString(), @{
+        Version = $versionStrict.ToString()
+        URL32   = $url32
+        URL64   = $url64
+      })
   }
 
   return @{ Streams = $streams }

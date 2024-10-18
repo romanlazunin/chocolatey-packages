@@ -2,10 +2,19 @@
 
 function global:au_SearchReplace {
    @{
-        "$($Latest.PackageName).nuspec" = @{
-            "(\<dependency .+? version=)`"([^`"]+)`"" = "`$1`"[$($Latest.Version)]`""
+        ".\README.md" = @{
+            "(?i)(install the package )\[python\d+]\((.*)python\d+" = "`$1[$($Latest.Dependency)](`$2$($Latest.Dependency)"
         }
     }
 }
 
-update -ChecksumFor none
+function global:au_AfterUpdate($Package) {
+  Set-DescriptionFromReadme $Package -SkipFirst 2
+  Update-Metadata -data @{
+    dependency = "python3|[$($Latest.Version)]"
+    copyright  = $Latest.Copyright
+    licenseUrl = $Latest.LicenseUrl
+  }
+}
+
+update -ChecksumFor none -NoReadme

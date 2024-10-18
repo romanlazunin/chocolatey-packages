@@ -1,4 +1,4 @@
-﻿import-module au
+﻿Import-Module Chocolatey-AU
 Import-Module "$PSScriptRoot\..\..\scripts\au_extensions.psm1"
 
 $releases = 'https://www.zotero.org/download/client/dl?channel=release&platform=win32'
@@ -31,7 +31,7 @@ function global:au_SearchReplace {
 function global:au_GetLatest {
     $url = Get-RedirectedUrl -url $releases
 
-    $version  = $url -split '/' | select -Last 1 -Skip 1
+    $version  = $url -split '/' | Select-Object -Last 1 -Skip 1
 
     @{
         Version      = $version

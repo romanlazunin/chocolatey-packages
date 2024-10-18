@@ -3,25 +3,22 @@
 $toolsDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
 . "$toolsDir\helpers.ps1"
 
-$data = GetDownloadInformation -toolsPath $toolsDir
 $destinationFolder = GetInstallDirectory -toolsPath $toolsDir
 
 $packageArgs = @{
   PackageName  = 'tor-browser'
   FileType     = 'exe'
-  Url          = $data.URL32
-  Url64        = $data.URL64
-  Checksum     = $data.Checksum
-  Checksum64   = $data.Checksum64
+  Url          = 'https://archive.torproject.org/tor-package-archive/torbrowser/13.5.7/tor-browser-windows-i686-portable-13.5.7.exe'
+  Url64        = 'https://archive.torproject.org/tor-package-archive/torbrowser/13.5.7/tor-browser-windows-x86_64-portable-13.5.7.exe'
+  Checksum     = '68cc3e9a72e256ec60c7d702f414cf5c0cd9a77dee7c79b9ad0da6bddfd43606'
+  Checksum64   = 'b62a289d756a77a7db1e5b818f9fdb094a0d7dcb19b0fdaf8e8b4350be0530d7'
   ChecksumType = 'sha256'
   SilentArgs   = "/S","/D=$destinationFolder"
 }
 
-"Using Language code: '$($data.Locale)'"
-
 Install-ChocolateyPackage @packageArgs
 
-# Create .ignore files for exeâ€™s
+# Create .ignore files for exe’s
 Get-ChildItem -Path $destinationFolder -Recurse | Where-Object {
   $_.Extension -eq '.exe' } | ForEach-Object {
   New-Item $($_.FullName + '.ignore') -Force -ItemType file

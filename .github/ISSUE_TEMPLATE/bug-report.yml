@@ -9,6 +9,14 @@ body:
         **Do NOT report Security related issues here, instead use the Report Abuse on the package page instead. See https://docs.chocolatey.org/en-us/information/security#report-issue**.
 
         Thank you for taking the time to fill out this bug report! Please fill out out the necessary information as complete as you can. Remember, it is better to include too much information, than too little. Additionally, make sure that the issue title starts with the name of the package you were seeing the issue with inside paranthesis (e.g. `(putty)`).
+  - type: checkboxes
+    attributes:
+      label: Checklist
+      description: Before continuing, make sure that you have done the following.
+      options:
+        - label: I have verified that this is the correct repository, and the package is maintained by the chocolatey-community user.
+          required: true
+        - label: I have verified that this is happening in the latest available version of the package.
   - type: dropdown
     id: choco-version
     attributes:
@@ -18,15 +26,8 @@ body:
         Do mind that versions older than the latest version that was available 1 year ago will not be supported.
       multiple: true
       options:
-        - 1.1.0
-        - 1.0.1
-        - 1.0.0
-        - 0.12.1
-        - 0.12.0
-        - 0.11.3
-        - 0.11.2
-        - 0.11.1
-        - 0.11.0
+        - 2.3.0
+        - 2.2.2
         - Other (note in the comments)
     validations:
       required: true

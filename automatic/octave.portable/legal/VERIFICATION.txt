@@ -8,8 +8,7 @@ location on <https://www.gnu.org/software/octave/download.html>
 and can be verified by doing the following:
 
 1. Download the following:
-  32-bit software: <https://ftp.gnu.org/gnu/octave/windows/octave-7.2.0-w32.7z>
-  64-bit software: <https://ftp.gnu.org/gnu/octave/windows/octave-7.2.0-w64.7z>
+  64-bit software: <https://ftp.gnu.org/gnu/octave/windows/octave-9.2.0-w64.7z>
 
 2. Get the checksum using one of the following methods:
   - Using powershell function 'Get-FileHash'
@@ -18,7 +17,6 @@ and can be verified by doing the following:
 3. The checksums should match the following:
 
   checksum type: sha256
-  checksum32: 42bdc77cc1ac60b302e308f528f85da29026170a5b496928fbcb4799feee6b2a
-  checksum64: f07ba521eebcd0a3d61e547608fb4a45d7905d87e51c3ee0c145f23739ec709c
+  checksum64: 735455b1dc365f77d0eb1fbaf5b210676accfb3a5d0c13f1032644ab20829c08
 
 File 'gpl-3.0.txt' is obtained from <https://www.gnu.org/software/octave/license.html>

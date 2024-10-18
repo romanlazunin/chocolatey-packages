@@ -12,6 +12,7 @@
 # Multiple users can be set for the same match
 
 */ruby.portable*      @chocolatey-community/chocolatey-team-maintainers
+*/python3-streams     @chocolatey-community/chocolatey-team-maintainers @Jackenmen
 */python*             @chocolatey-community/chocolatey-team-maintainers
 */calibre*            @gep13 @AdmiringWorm
 */cdburnerxp*         @gep13
@@ -22,10 +23,10 @@
 */gom-player*         @AdmiringWorm
 */jubler*             @AdmiringWorm
 */juju*               @AdmiringWorm
-*/transifex*          @AdmiringWorm
+*/transifex*          @chocolatey-community/chocolatey-team-maintainers
 */waterfox*           @AdmiringWorm
-*/k9s*                @moebius87
 */composer*           @johnstevenson
+*/k9s*                @danielkoek
 */krew*               @jetersen
 */kubelogin*          @jetersen
 */ffmpeg-full*        @VuiMuich
@@ -35,7 +36,19 @@
 */es*                 @TheCakeIsNaOH
 */selenium-chrome-driver* @chocolatey-community/chocolatey-team-maintainers
 */intunewinapputil*   @chocolatey-community/chocolatey-team-maintainers
+*/selenium-chromium-edge-driver* @chocolatey-community/chocolatey-team-maintainers @AdmiringWorm
+*/jenkins*            @chocolatey-community/chocolatey-team-maintainers @chocolatey-community/chocolatey-community-solutions
+*/brave*              @AdmiringWorm
+*/nexus-repository*   @chocolatey-community/chocolatey-team-maintainers @chocolatey-community/chocolatey-community-solutions
+*/totalcommander*     @pauby
+*/kubescape*          @HollowMan6
+*/googlechromebeta*   @tunisiano187
+*/krita*              @tunisiano187
+*/selenium.powershell* @chocolatey-community/chocolatey-team-maintainers
 
 # Other
 # This can be any file other that won't be matched as a package
 # You can use the same matches as normally would be used in .gitignore/.gitattributes
+
+extensions/chocolatey-azuredatastudio.extension/*      @pascalberger
+extensions/chocolatey-vscode.extension/*               @pascalberger
