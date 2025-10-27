@@ -3,10 +3,9 @@
 $toolsPath = Split-Path $MyInvocation.MyCommand.Definition
 
 $packageArgs = @{
-  PackageName    = 'git.portable'
-  FileFullPath   = Get-Item $toolsPath\*-32-bit.7z.exe
-  FileFullPath64 = Get-Item $toolsPath\*-64-bit.7z.exe
-  Destination    = "$(Get-ToolsLocation)\git"
+  PackageName  = 'git.portable'
+  file64       = "$toolsPath\PortableGit-2.51.1-64-bit.7z.exe"
+  Destination  = "$(Get-ToolsLocation)\git"
 }
 Get-ChocolateyUnzip @packageArgs
 Install-ChocolateyPath "$($packageArgs.Destination)\bin"

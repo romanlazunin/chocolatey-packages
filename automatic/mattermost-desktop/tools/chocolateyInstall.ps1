@@ -5,13 +5,13 @@ $toolsDir = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 $packageArgs = @{
   packageName            = 'mattermost-desktop'
   fileType               = 'msi'
-  file                   = "$toolsDir\mattermost-desktop-5.9.0-win-arm64.msi"
-  file64                 = "$toolsDir\mattermost-desktop-5.9.0-win-x64.msi"
-  checksum               = '2A13566E780CCAED7A944C974AE547E7B045D2A4D25602740D210AECE3F028C8'
-  checksum64             = '2E8592BC18E1AA18A59365547135778FE462A76549ECC4A8FA005452F74BF162'
+  file                   = "$toolsDir\mattermost-desktop-5.13.2-win-arm64.msi"
+  file64                 = "$toolsDir\mattermost-desktop-5.13.2-win-x64.msi"
+  checksum               = '4FCE4BF8AEAAC928BC8EA3C6D610E80A3FE58F9A197DAAC988F9318C9E269255'
+  checksum64             = 'D3C7F8A92BC5D7651FE2352A1644CDF4937E521170089FDD39FB8BD513BC56BC'
   checksumType           = 'sha256'
   checksumType64         = 'sha256'
-  silentArgs             = "/qn /norestart /l*v `"$($env:TEMP)\$($packageName).$($env:chocolateyPackageVersion).MsiInstall.log`""
+  silentArgs             = "/qn /norestart /l*v `"$($env:TEMP)\$($packageName).$($env:chocolateyPackageVersion).MsiInstall.log`" ALLUSERS=1"
   validExitCodes         = @(0, 3010, 1641)
   softwareName           = 'Mattermost*'
 }
