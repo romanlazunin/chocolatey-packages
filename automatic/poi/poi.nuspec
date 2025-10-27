@@ -3,13 +3,13 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>poi</id>
-    <version>10.8.0</version>
+    <version>10.9.2</version>
     <owners>chocolatey-community, drelatgithub</owners>
     <packageSourceUrl>https://github.com/chocolatey-community/chocolatey-packages/tree/master/automatic/poi</packageSourceUrl>
 
     <title>poi</title>
     <authors>POI Contributors</authors>
-    <projectUrl>https://poi.io</projectUrl>
+    <projectUrl>https://poi.moe</projectUrl>
     <iconUrl>https://cdn.jsdelivr.net/gh/chocolatey-community/chocolatey-packages@5be34cac264309fd6bdaaa122aea08dd4ad32bb0/icons/poi.png</iconUrl>
     <copyright>Copyright (c) 2015-2018 poi contributors</copyright>
     <licenseUrl>https://cdn.rawgit.com/poooi/poi/master/LICENSE</licenseUrl>
@@ -18,7 +18,7 @@
     <bugTrackerUrl>https://github.com/poooi/poi/issues</bugTrackerUrl>
     <tags>foss cross-platform poi kancolle yuudachi</tags>
     <summary>POI is a scalable KanColle browser and tool</summary>
-    <description><![CDATA[[poi](https://poi.io) is an open source Kancolle browser based on Electron. poi provides basic functionalities to enhance the gaming experience and is complemented by a variety of plugins. poi behaves the same as Chrome and does not modify game data, packets or implement bots/macros.
+    <description><![CDATA[[poi](https://poi.moe) is an open source Kancolle browser based on Electron. poi provides basic functionalities to enhance the gaming experience and is complemented by a variety of plugins. poi behaves the same as Chrome and does not modify game data, packets or implement bots/macros.
 
 More information could be obtained [here](https://github.com/poooi/poi/blob/master/README.md).
 
@@ -39,7 +39,7 @@ More information could be obtained [here](https://github.com/poooi/poi/blob/mast
     - Daily equipment improvement list for Akashi's Arsenal
     - Multiple panels for other DMM games
 ]]></description>
-    <releaseNotes>https://github.com/poooi/poi/releases/tag/v10.8.0</releaseNotes>
+    <releaseNotes>https://github.com/poooi/poi/releases/tag/v10.9.2</releaseNotes>
   </metadata>
   <files>
     <file src="legal\**" target="legal" />

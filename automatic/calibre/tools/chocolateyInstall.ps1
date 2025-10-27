@@ -5,20 +5,12 @@ $toolsPath = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 $packageArgs = @{
   packageName    = $env:ChocolateyPackageName
   fileType       = 'MSI'
-  url            = 'https://download.calibre-ebook.com/5.44.0/calibre-5.44.0.msi'
-  checksum       = '21903563B5BB5817EE33F3A3EA6B0F3B71C3EAC1793069F89674D70A99F0F080'
-  checksumType   = 'sha256'
-  file64         = "$toolsPath\calibre-64bit-5.44.0.msi"
+  url64          = 'https://download.calibre-ebook.com/8.13.0/calibre-64bit-8.13.0.msi'
+  checksum64     = '081968d6e919c8a1e45de763378ce209da864de2b892dfb4ad5f7ebbe44c25c1'
+  checksumType64 = 'sha256'
   softwareName   = 'calibre*'
   silentArgs     = '/quiet'
   validExitCodes = @(0, 3010, 1641)
 }
 
-if ((Get-OSArchitectureWidth -compare 32) -or ($env:chocolateyForceX86 -eq $true)) {
-  Install-ChocolateyPackage @packageArgs
-}
-else {
-  Install-ChocolateyInstallPackage @packageArgs
-}
-
-Remove-Item -Force -ea 0 "$toolsPath\*.msi","$toolsPath\*.ignore"
+Install-ChocolateyPackage @packageArgs

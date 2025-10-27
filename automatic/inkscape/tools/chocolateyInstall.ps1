@@ -5,18 +5,15 @@ $toolsPath = Split-Path -parent $MyInvocation.MyCommand.Definition
 $packageArgs = @{
   packageName    = $env:ChocolateyPackageName
   fileType       = 'msi'
-  url            = 'https://inkscape.org/gallery/item/34671/inkscape-1.2.1_2022-07-14_9c6d41e410-x86.msi'
-  checksum       = 'D6FE8ACB537C65274F296A916E03FC02C82FF900A5E3EEB3FFEB013AF706D4B9'
-  checksumType   = 'sha256'
-  file64         = "$toolsPath\inkscape-1.2.1_2022-07-14_9c6d41e410-x64.msi"
+  file64         = "$toolsPath\inkscape-1.4.2_2025-05-08_ebf0e94-x64.msi"
   softwareName   = 'InkScape*'
-  silentArgs     = "/qn /norestart /l*v `"$($env:TEMP)\$($env:chocolateyPackageName).$($env:chocolateyPackageVersion).MsiInstall.log`""
+  silentArgs     = "/qn /norestart /l*v `"$($env:TEMP)\$($env:chocolateyPackageName).$($env:chocolateyPackageVersion).MsiInstall.log`" ALLUSERS=1"
   validExitCodes = @(0)
 }
 
 [array]$key = Get-UninstallRegistrykey $packageArgs['softwareName']
 if ($key.Count -eq 1) {
-  if ($key[0].DisplayVersion -eq '1.2.1') {
+  if ($key[0].DisplayVersion -eq '1.4.2') {
     Write-Host "Software already installed"
     return
   }
@@ -37,12 +34,7 @@ elseif ($key.Count -gt 1) {
   Write-Warning "Please uninstall InkScape before installing this package."
 }
 
-if ((Get-OSArchitectureWidth 32) -or ($env:chocolateyForceX86 -eq $true)) {
-  Install-ChocolateyPackage @packageArgs
-}
-else {
-  Install-ChocolateyInstallPackage @packageArgs
-}
+Install-ChocolateyInstallPackage @packageArgs
 
 Get-ChildItem $toolsPath\*.msi | ForEach-Object { Remove-Item $_ -ea 0; if (Test-Path $_) { Set-Content "$_.ignore" } }
 

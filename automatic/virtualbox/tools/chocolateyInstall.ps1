@@ -19,14 +19,14 @@ $silentArgs += if ($pp.NoRegister)        { 'VBOX_REGISTERFILEEXTENSIONS=0';    
 $packageArgs = @{
   packageName            = 'virtualbox'
   fileType               = 'EXE'
-  url                    = 'https://download.virtualbox.org/virtualbox/6.1.36/VirtualBox-6.1.36-152435-Win.exe'
-  url64bit               = 'https://download.virtualbox.org/virtualbox/6.1.36/VirtualBox-6.1.36-152435-Win.exe'
-  checksum               = '689e43fc3ef4909d2088a0c930a8803dcdede03fec0f0f9d9f3b19336a12bfbc'
-  checksum64             = '689e43fc3ef4909d2088a0c930a8803dcdede03fec0f0f9d9f3b19336a12bfbc'
+  url                    = 'https://download.virtualbox.org/virtualbox/7.2.4/VirtualBox-7.2.4-170995-Win.exe'
+  url64bit               = 'https://download.virtualbox.org/virtualbox/7.2.4/VirtualBox-7.2.4-170995-Win.exe'
+  checksum               = '22988be9792f39c8e07068504612bd83aae8f8317e2aaf7515079f5cd9421675'
+  checksum64             = '22988be9792f39c8e07068504612bd83aae8f8317e2aaf7515079f5cd9421675'
   checksumType           = 'sha256'
   checksumType64         = 'sha256'
   silentArgs             = $silentArgs
-  validExitCodes         = @(0)
+  validExitCodes         = @(0, 3010)
   softwareName           = 'Oracle VM VirtualBox *'
 }
 Install-ChocolateyPackage @packageArgs
@@ -39,8 +39,8 @@ if ($pp.ExtensionPack) {
     Write-Host "Installing extension pack"
     Write-Warning "*** THIS IS A COMMERCIAL EXTENSION AND CAN INCURE SIGNIFICANT FINANCIAL COSTS ***"
 
-    $url_ep       = 'https://download.virtualbox.org/virtualbox/6.1.36/Oracle_VM_VirtualBox_Extension_Pack-6.1.36.vbox-extpack'
-    $checksum_ep  = '316e7ce8bd5d1dd1f383ad61f209bd6dd30da45c86f9e37e653b8eb6f1428956'
+    $url_ep       = 'https://download.virtualbox.org/virtualbox/7.2.4/Oracle_VirtualBox_Extension_Pack-7.2.4.vbox-extpack'
+    $checksum_ep  = 'b80ee54252442ec025d6a7b2b9c3f32526ab5c2d91a0ffa2385be3ed83bcff0b'
     $file_path_ep = (Get-PackageCacheLocation) + '\' + ($url_ep -split '/' | Select-Object -Last 1)
     Get-ChocolateyWebFile `
         -PackageName    'virtualbox-extensionpack' `

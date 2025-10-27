@@ -1,6 +1,6 @@
 ﻿[CmdletBinding()]
 param($IncludeStream, [switch]$Force)
-Import-Module AU
+Import-Module Chocolatey-AU
 
 function global:au_BeforeUpdate { Get-RemoteFiles -Purge -NoSuffix }
 
@@ -24,12 +24,12 @@ function global:au_GetLatest {
   )
 
   $streams = @{}
-  $urls | % {
+  $urls | ForEach-Object {
     $releaseUrl = $_
     try {
       $url = Get-RedirectedUrl $releaseUrl 3>$null
       $verRe = 'Setup-|\.exe$'
-      $version = $url -split "$verRe" | select -last 1 -skip 1
+      $version = $url -split "$verRe" | Select-Object -last 1 -skip 1
       if (!$version) { return }
       $version = Get-Version $version
 

@@ -3,7 +3,7 @@
 $packageName = '7zip.install'
 
 $uninstalled = $false
-[array]$key = Get-UninstallRegistryKey -SoftwareName '7-zip*'
+[array]$key = Get-UninstallRegistryKey -SoftwareName '7-zip*' | Where-Object { $_.DisplayName -notlike '7-zip zs*' }
 
 if ($key.Count -eq 1) {
   $key | ForEach-Object {
@@ -17,6 +17,7 @@ if ($key.Count -eq 1) {
 
     Uninstall-ChocolateyPackage @packageArgs
     Uninstall-BinFile -Name "7z.exe" -Path $packageArgs["file"]
+    Uninstall-BinFile -Name "7zG.exe" -Path $packageArgs["file"]
   }
 } elseif ($key.Count -eq 0) {
   Write-Warning "$packageName has already been uninstalled by other means."

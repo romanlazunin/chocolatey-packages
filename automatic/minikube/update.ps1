@@ -1,10 +1,7 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param([switch] $Force)
 
-Import-Module AU
-
-$domain   = 'https://github.com'
-$releases = "$domain/kubernetes/minikube/releases/latest"
+Import-Module Chocolatey-AU
 
 function global:au_BeforeUpdate {
   Get-RemoteFiles -Purge -NoSuffix -FileNameBase "minikube"
@@ -26,18 +23,13 @@ function global:au_SearchReplace {
 }
 
 function global:au_GetLatest {
-  $download_page = Invoke-WebRequest -Uri $releases -UseBasicParsing
-
-  $re = '\.exe$'
-  $url = $download_page.links | ? href -match $re | % href | select -First 1
-
-  $version = (Split-Path ( Split-Path $url ) -Leaf).Substring(1)
+  $LatestRelease = Get-GitHubRelease kubernetes minikube
 
   return @{
-    Version     = $version
-    URL64       = "https://storage.googleapis.com/minikube/releases/v${version}/minikube-windows-amd64.exe"
-    ReleaseNotes= "$domain/kubernetes/minikube/blob/v${version}/CHANGELOG.md"
-    ReleaseURL  = "$domain/kubernetes/minikube/releases/tag/v${version}"
+    Version     = $LatestRelease.tag_name.TrimStart("v")
+    URL64       = $LatestRelease.assets | Where-Object {$_.name -eq "minikube-windows-amd64.exe"} | Select-Object -ExpandProperty browser_download_url
+    ReleaseNotes= "https://github.com/kubernetes/minikube/blob/$($LatestRelease.tag_name)/CHANGELOG.md"
+    ReleaseURL  = $LatestRelease.html_url
     PackageName = 'Minikube' # Casing is not in all lowercase on chocolatey.org
   }
 }

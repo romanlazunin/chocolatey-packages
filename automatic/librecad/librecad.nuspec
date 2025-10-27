@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>librecad</id>
-    <version>2.2.0-rc4</version>
+    <version>2.2.1.1</version>
     <packageSourceUrl>https://github.com/chocolatey-community/chocolatey-packages/tree/master/automatic/librecad</packageSourceUrl>
     <owners>chocolatey-community</owners>
     <title>LibreCAD</title>
@@ -24,7 +24,8 @@
 LibreCAD is a free Open Source CAD application for Windows, Apple and Linux. Support and documentation is free from our large, dedicated community of users, contributors and developers.
 
 ]]></description>
-    <releaseNotes>https://github.com/LibreCAD/LibreCAD/releases/tag/2.1.3</releaseNotes>
+    <releaseNotes>## Commits
+- fixed spurious paper size too small warning ([Dongxu Li](https://github.com/LibreCAD/LibreCAD/commit/eb826ef8a2f168c8ae7ff3c1e565617d49ccc49d))</releaseNotes>
     <dependencies>
       <dependency id="chocolatey-core.extension" version="1.3.3" />
     </dependencies>

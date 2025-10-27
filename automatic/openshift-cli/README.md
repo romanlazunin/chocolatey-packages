@@ -1,4 +1,4 @@
-# <img src="https://cdn.rawgit.com/chocolatey/chocolatey-coreteampackages/b091b872f1123f77e68599c21b7bfdaad249e375/icons/openshift-cli.png" width="48" height="48"/> [openshift-cli](https://chocolatey.org/packages/openshift-cli)
+# <img src="https://cdn.jsdelivr.net/gh/chocolatey-community/chocolatey-packages@b091b872f1123f77e68599c21b7bfdaad249e375/icons/openshift-cli.png" width="48" height="48"/> [openshift-cli](https://chocolatey.org/packages/openshift-cli)
 
 ## OpenShift Application Platform
 ### The Open Source Container Application Platform - Enterprise Kubernetes for Developers
@@ -22,4 +22,7 @@ Origin is the upstream community project that powers OpenShift. Built around a c
   * Limit, track, and manage the developers and teams on the platform.
 * Integrated Docker registry, automatic edge load balancing, cluster logging, and integrated metrics.
 
-#### Note: Windows support is limited to 64bit systems.
+## Notes
+
+* Windows support is limited to 64bit systems.
+* **If the package is out of date please check [Version History](#versionhistory) for the latest submitted version. If you have a question, please ask it in [Chocolatey Community Package Discussions](https://github.com/chocolatey-community/chocolatey-packages/discussions) or raise an issue on the [Chocolatey Community Packages Repository](https://github.com/chocolatey-community/chocolatey-packages/issues) if you have problems with the package. Disqus comments will generally not be responded to.**

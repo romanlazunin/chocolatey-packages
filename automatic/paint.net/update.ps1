@@ -1,6 +1,4 @@
-﻿Import-Module AU
-
-$releases = 'https://github.com/paintdotnet/release/releases'
+﻿Import-Module Chocolatey-AU
 
 function global:au_SearchReplace {
   @{
@@ -8,28 +6,28 @@ function global:au_SearchReplace {
         "(?i)(\s+x64:).*"            = "`${1} $($Latest.URL64)"
         "(?i)(checksum64:).*"        = "`${1} $($Latest.Checksum64)"
       }
+      ".\tools\chocolateyInstall.ps1" = @{
+        "(?i)(^\s*file64\s*=\s*`"[$]toolsPath\\).*" = "`${1}$($Latest.FileNameMsi64)`""
+      }
   }
 }
 
 function global:au_BeforeUpdate {
   Get-RemoteFiles -Purge -NoSuffix
 
-  Set-Alias 7z $Env:chocolateyInstall\tools\7z.exe
-  7z e tools\*.zip -otools *.exe -r -y
-  rm tools\*.zip -ea 0
+  Set-Alias -Name 7z -Value $Env:chocolateyInstall\tools\7z.exe
+  7z e tools\*.zip -otools *.msi -r -y
+  Remove-Item tools\*.zip -ea 0
 }
 
 function global:au_GetLatest {
-    $download_page = Invoke-WebRequest -Uri $releases -UseBasicParsing
-    $domain  = $releases -split '(?<=//.+)/' | select -First 1
-    $re = 'paint.net.+.install.x64.zip'
-    $url = $download_page.links | ? href -match $re | select -First 1 -expand href
-    $version = $url -split '/' | select -Last 1 -Skip 1
+    $LatestRelease = Get-GitHubRelease paintdotnet release
 
     @{
-        Version = $version.Substring(1)
-        Url64   = $domain + $url
-    }
+        Version = $LatestRelease.tag_name.TrimStart("v")
+        Url64   = $LatestRelease.assets | Where-Object {$_.name -match 'paint.net.+.winmsi.x64.zip'} | Select-Object -ExpandProperty browser_download_url
+        FileNameMsi64  = $LatestRelease.assets | Where-Object {$_.name -match 'paint.net.+.winmsi.x64.zip'} | Select-Object -ExpandProperty Name | ForEach-Object {$_ -replace "zip","msi"}
+      }
 }
 
 update -ChecksumFor none

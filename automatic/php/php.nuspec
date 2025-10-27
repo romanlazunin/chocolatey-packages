@@ -4,7 +4,7 @@
   <metadata>
     <id>php</id>
     <title>PHP (Hypertext Preprocessor)</title>
-    <version>8.1.8</version>
+    <version>8.4.14</version>
     <authors>PHP Authors</authors>
     <owners>chocolatey-community, Rob Reynolds</owners>
     <summary>PHP – widely-used general-purpose scripting language that is especially suited for Web development and can be embedded into HTML.</summary>
@@ -22,6 +22,7 @@ For example: `choco install php --package-parameters='"/ThreadSafe ""/InstallDir
 
 ## Notes
 
+- Some executables in this package (such as deplister.exe) may trigger **false positives** on VirusTotal scans. This is a known issue and does not indicate a security concern. For reference, see issue on the [PHP GitHub repository](https://github.com/php/php-src/issues/14875).
 - **If the package is out of date please check [Version History](#versionhistory) for the latest submitted version. If you have a question, please ask it in [Chocolatey Community Package Discussions](https://github.com/chocolatey-community/chocolatey-packages/discussions) or raise an issue on the [Chocolatey Community Packages Repository](https://github.com/chocolatey-community/chocolatey-packages/issues) if you have problems with the package. Disqus comments will generally not be responded to.**
 ]]></description>
     <projectUrl>http://www.php.net/</projectUrl>
@@ -29,15 +30,14 @@ For example: `choco install php --package-parameters='"/ThreadSafe ""/InstallDir
     <tags>php development programming foss cross-platform admin</tags>
     <licenseUrl>http://us.php.net/license/</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <releaseNotes>https://www.php.net/ChangeLog-8.php#8.1.8</releaseNotes>
+    <releaseNotes>https://www.php.net/ChangeLog-8.php#8.4.14</releaseNotes>
     <iconUrl>https://cdn.jsdelivr.net/gh/chocolatey-community/chocolatey-packages@4e147ce52b1a2a7ac522ffbce6d176f257de6ac1/icons/php.svg</iconUrl>
     <bugTrackerUrl>https://bugs.php.net/</bugTrackerUrl>
     <docsUrl>https://secure.php.net/docs.php</docsUrl>
     <projectSourceUrl>https://github.com/php/php-src</projectSourceUrl>
     <dependencies>
-      <dependency id="vcredist140" version="14.28.29325.2" />
+      <dependency id="vcredist140" version="14.42.34433" />
       <dependency id="chocolatey-core.extension" version="1.3.3" />
-      <dependency id="chocolatey" version="0.10.0" />
     </dependencies>
   </metadata>
   <files>

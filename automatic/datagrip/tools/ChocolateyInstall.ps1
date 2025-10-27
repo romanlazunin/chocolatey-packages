@@ -2,25 +2,22 @@
 
 $toolsDir     = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 
-# Workaround for https://youtrack.jetbrains.com/issue/IDEA-202935
-$programFiles = (${env:ProgramFiles(x86)}, ${env:ProgramFiles} -ne $null)[0]
 $pp = Get-PackageParameters
 
-$installDir = "$programFiles\JetBrains\DataGrip $env:ChocolateyPackageVersion"
-if ($pp.InstallDir) {
-    $installDir = $pp.InstallDir
-}
-
 $silentArgs   = "/S /CONFIG=$toolsDir\silent.config "
-$silentArgs   += "/D=`"$installDir`""
-
-New-Item -ItemType Directory -Force -Path $installDir
+if ($pp.InstallDir) {
+    # note there are no quotes around the installDir
+    # (taken from https://www.jetbrains.com/help/datagrip/2023.1/installation-guide.html#silent):
+    # /D: Specify the path to the installation directory
+    # This parameter must be the last in the command line, and it should not contain any quotes even if the path contains blank spaces.
+    $silentArgs   += "/D=$($pp.InstallDir)"
+}
 
 $arguments              = @{
     packageName         = $env:ChocolateyPackageName
     softwareName        = 'JetBrains DataGrip*'
-    url                 = 'https://download.jetbrains.com/datagrip/datagrip-2022.2.1.exe'
-    checksum            = 'aad01be6fe12a8eee55b8720aea20bfa6b7d13cab83ef7e8942a9f20da099315'
+    url                 = 'https://download.jetbrains.com/datagrip/datagrip-2025.2.4.exe'
+    checksum            = '8f807c28ff5efbfb5a72a4132c11917508854e7533bb3f92a01dfc1d7b04674f'
     fileType            = 'exe'
     checksumType        = 'sha256'
     silentArgs          = $silentArgs

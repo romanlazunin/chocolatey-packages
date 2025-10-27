@@ -1,6 +1,4 @@
-import-module au
-
-$releases = 'https://autohotkey.com/download'
+﻿Import-Module Chocolatey-AU
 
 function global:au_SearchReplace {
   @{
@@ -10,48 +8,25 @@ function global:au_SearchReplace {
     }
 
     ".\tools\verification.txt"      = @{
-      "(?i)(\s+x32:).*"            = "`${1} $($Latest.URL)"
-      "(?i)(\s+x64:).*"            = "`${1} $($Latest.URL)"
-      "(?i)(checksum32:).*"        = "`${1} $($Latest.Checksum)"
-      "(?i)(checksum64:).*"        = "`${1} $($Latest.Checksum)"
-      "(?i)(Get-RemoteChecksum).*" = "`${1} $($Latest.URL)"
+      "(?i)(\s+x32:).*"            = "`${1} $($Latest.URL32)"
+      "(?i)(checksum32:).*"        = "`${1} $($Latest.Checksum32)"
+      "(?i)(Get-RemoteChecksum).*" = "`${1} $($Latest.URL32)"
     }
   }
 }
+
 function global:au_BeforeUpdate {
-  rm "$PSScriptRoot\tools\*.zip"
-  $filePath = "$PSScriptRoot\tools\$($Latest.FileName)"
-  Invoke-WebRequest $Latest.URL -OutFile $filePath -UseBasicParsing
-  $Latest.ChecksumType = 'sha256'
-  $Latest.Checksum = Get-FileHash -Algorithm $Latest.ChecksumType -Path $filePath | % Hash
+  Get-RemoteFiles -Purge -NoSuffix
 }
 
 function global:au_GetLatest {
-  $version_page = Invoke-WebRequest -Uri $releases -UseBasicParsing
+  $LatestRelease = Get-GitHubRelease AutoHotkey AutoHotkey
 
-  $urls = $version_page.Links | ? href -match "^[\d\.]+\/$" | ? href -NotMatch "1\.0" | % href
-
-  $streams = @{}
-  $urls | % {
-    $releasesUrl = "$releases/$_"
-    $versionWithHash = Invoke-WebRequest -Uri "$releasesUrl/version.txt" -UseBasicParsing | % Content
-    $version = $versionWithHash -replace '(\d+.\d+-\w+)-\w+', '$1'
-    $version = $version -replace '(-\w+)\.', '$1'
-    if (!$version) { $version = $versionWithHash }
-
-    $url = "$releasesUrl/AutoHotkey_${versionWithHash}.zip"
-
-    $key = $releasesUrl -split '\/' | select -last 1 -Skip 1
-    if (!$streams.ContainsKey($key)) {
-      $streams.Add($key, @{
-          Version  = $version
-          URL      = $url
-          FileName = $url -split '/' | select -Last 1
-        })
-    }
+  @{
+    Version  = Get-Version $LatestRelease.tag_name
+    URL32    = $LatestRelease.assets.Where{$_.name.EndsWith('.zip')}.browser_download_url
+    FileName = $LatestRelease.assets.Where{$_.name.EndsWith('.zip')}.name
   }
-
-  return @{ Streams = $streams }
 }
 
-update -ChecksumFor none -NoCheckUrl
+update -NoCheckUrl -ChecksumFor none

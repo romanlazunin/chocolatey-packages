@@ -1,21 +1,29 @@
-import-module au
+﻿Import-Module Chocolatey-AU
 
 $domain = 'https://github.com'
 $releases = "$domain/git-for-windows/git/releases/latest"
 
-function global:au_BeforeUpdate { Get-RemoteFiles -Purge -NoSuffix }
+function global:au_BeforeUpdate {
+  $releaseAssets = Get-GitHubRelease -Owner 'git-for-windows' -Name 'git' -Tag $Latest.TagName | ForEach-Object assets
+
+  $Latest.URL64 = $releaseAssets | Where-Object name -match "Git-.+-64-bit.exe" | ForEach-Object browser_download_url
+
+  if (!$Latest.URL64) {
+    throw "64bit URL is missing"
+  }
+
+  Get-RemoteFiles -Purge -NoSuffix
+}
+
 function global:au_SearchReplace {
     @{
         ".\tools\chocolateyInstall.ps1" = @{
-            "(^[$]fileName32\s*=\s*)('.*')" = "`$1'$($Latest.FileName32)'"
             "(^[$]fileName64\s*=\s*)('.*')" = "`$1'$($Latest.FileName64)'"
         }
 
         ".\legal\verification.txt" = @{
-            "(?i)(32-Bit.+)\<.*\>" = "`${1}<$($Latest.URL32)>"
             "(?i)(64-Bit.+)\<.*\>" = "`${1}<$($Latest.URL64)>"
             "(?i)(checksum type:\s+).*" = "`${1}$($Latest.ChecksumType)"
-            "(?i)(checksum32:\s+).*" = "`${1}$($Latest.Checksum32)"
             "(?i)(checksum64:\s+).*" = "`${1}$($Latest.Checksum64)"
         }
      }
@@ -24,22 +32,22 @@ function global:au_SearchReplace {
 function global:au_GetLatest {
     $download_page = Invoke-WebRequest -Uri $releases -UseBasicParsing
 
-    #https://github.com/git-for-windows/git/releases/download/v2.11.0.windows.1/Git-2.11.0-32-bit.exe
-    $re32  = "Git-.+-32-bit.exe"
-    $url32 = $download_page.links | Where-Object href -match $re32 | Select-Object -First 1 -expand href | % { $domain + $_ }
+    $tagUrl = $download_page.Links | Where-Object href -match 'releases/tag/.*windows' | Select-Object -First 1 -ExpandProperty href
+    $tagName = $tagUrl -split '\/' | Select-Object -Last 1
 
-    #https://github.com/git-for-windows/git/releases/download/v2.11.0.windows.1/Git-2.11.0-64-bit.exe
-    $re64  = "Git-.+-64-bit.exe"
-    $url64 = $download_page.links | Where-Object href -match $re64 | Select-Object -First 1 -expand href | % { $domain + $_ }
+    $re = 'v(?<version>[\d\.]+)\.windows\.(?<revision>[2-9])?'
 
-    $version32 = $url32 -split '-' | Select-Object -Skip 2 -Last 1
-    $version64 = $url64 -split '-' | Select-Object -Skip 2 -Last 1
-    if ($version32 -ne $version64) {  throw "Different versions for 32-Bit and 64-Bit detected." }
+    if ($tagName -match $re) {
+      if ($Matches['revision']) {
+        $version = "$($Matches['version']).$($Matches['revision'])"
+      } else {
+        $version = "$($Matches['version'])"
+      }
+    }
 
     @{
-        Version = $version32
-        URL32   = $url32
-        URL64   = $url64
+        Version = $version
+        TagName = $tagName
     }
 }
 

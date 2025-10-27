@@ -2,18 +2,18 @@ VERIFICATION
 Verification is intended to assist the Chocolatey moderators and community
 in verifying that this package's contents are trustworthy.
 
-The installer have been downloaded from the GitHub mirror and can be verified like this:
+The installer has been downloaded from the GitHub mirror and can be verified like this:
 
 1. Download the following installer(s):
 
-x86: https://github.com/henrypp/simplewall/releases/download/v.3.6.4/simplewall-3.6.4-setup.exe
+x86: https://github.com/henrypp/simplewall/releases/download/v.3.8.7/simplewall-3.8.7-setup.exe
 
 2. You can use one of the following methods to obtain the checksum(s):
   - Use powershell function 'Get-Filehash'
   - Use chocolatey utility 'checksum.exe'
 
   checksum type: sha256
-  checksum32: 02B4F48506BC441A5EB1528D6FF976B323B07484A7322CAF1236F5F5B02B4854
+  checksum32: C8656DD1BF26D05BE6E89011BC2688935E76F91C20DDF89D52457CD142592AFC
 
 The included 'LICENSE.txt' file have been obtained from:
 https://github.com/henrypp/simplewall/blob/master/LICENSE

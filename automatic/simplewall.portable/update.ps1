@@ -1,9 +1,9 @@
-. $PSScriptRoot\..\simplewall\update.ps1
+﻿. $PSScriptRoot\..\simplewall\update.ps1
 
 function global:au_BeforeUpdate {
     $Latest.URL32 = $Latest.URL32_p
-    $Latest.FileType = 'zip'
-    cp $PSScriptRoot\..\simplewall\README.md $PSScriptRoot\README.md
+    $Latest.FileType = '7z'
+    Copy-Item $PSScriptRoot\..\simplewall\README.md $PSScriptRoot\README.md
     Get-RemoteFiles -Purge -NoSuffix
 }
 

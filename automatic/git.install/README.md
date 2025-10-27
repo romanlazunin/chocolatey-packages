@@ -13,9 +13,10 @@ Git for Windows focuses on offering a lightweight, native set of tools that brin
 See the [Git Package Parameters documentation page](https://github.com/chocolatey-community/chocolatey-packages/blob/master/automatic/git.install/ARGUMENTS.md).
 
 Example for passing in package parameters:
-`choco install git.install --params "/GitAndUnixToolsOnPath /WindowsTerminal /NoAutoCrlf`
+`choco install git.install --params "'/GitAndUnixToolsOnPath /WindowsTerminal /NoAutoCrlf'"`
 
 ## Notes
 
-- The package uses default install options minus cheetah integration and desktop icons. Cheetah prevents a good upgrade scenario, so it has been removed.
+- The package uses default install options minus desktop icons.
 - **If the package is out of date please check [Version History](#versionhistory) for the latest submitted version. If you have a question, please ask it in [Chocolatey Community Package Discussions](https://github.com/chocolatey-community/chocolatey-packages/discussions) or raise an issue on the [Chocolatey Community Packages Repository](https://github.com/chocolatey-community/chocolatey-packages/issues) if you have problems with the package. Disqus comments will generally not be responded to.**
+- Starting with version 2.49.0, installers for 32bit platforms are no longer available. If this is required, use an older version of the package.

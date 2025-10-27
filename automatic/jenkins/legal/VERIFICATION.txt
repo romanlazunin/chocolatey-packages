@@ -1,0 +1,16 @@
+VERIFICATION
+Verification is intended to assist the Chocolatey moderators and community
+in verifying that this package's contents are trustworthy.
+
+The installer has been downloaded from their official download link from <https://www.jenkins.io/download/>
+
+1. Download the file via:
+  64-Bit: <http://mirrors.jenkins-ci.org/windows-stable/2.528.1/jenkins.msi>
+2. You can use one of the following methods to obtain the checksum
+  - Use powershell function 'Get-Filehash'
+  - Use chocolatey utility 'checksum.exe'
+
+  checksum type: sha256
+  checksum64: 575F02645DBED873E2408D61385A3A6337E438A84BDD1C72EB45C33A315EC3AB
+
+File 'LICENSE.txt' is obtained from <https://github.com/jenkinsci/jenkins/blob/master/LICENSE.txt>

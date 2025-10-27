@@ -1,31 +1,24 @@
 ﻿$ErrorActionPreference = 'Stop'
 
-$version = '7.2.0'
+$version = '10.1.0'
 
 $toolsDir = $(Split-Path -parent $MyInvocation.MyCommand.Definition)
 $progDir  = "$toolsDir\octave"
 
-$osBitness = Get-OSArchitectureWidth
 
 $packageArgs = @{
   PackageName    = 'octave.portable'
   UnzipLocation  = $toolsDir
-  Url            = 'https://ftp.gnu.org/gnu/octave/windows/octave-7.2.0-w32.7z'
-  Url64          = 'https://ftp.gnu.org/gnu/octave/windows/octave-7.2.0-w64.7z'
-  Checksum       = '42bdc77cc1ac60b302e308f528f85da29026170a5b496928fbcb4799feee6b2a'
-  Checksum64     = 'f07ba521eebcd0a3d61e547608fb4a45d7905d87e51c3ee0c145f23739ec709c'
-  ChecksumType   = 'sha256'
+  Url64          = 'https://ftp.gnu.org/gnu/octave/windows/octave-10.1.0-w64.7z'
+  Checksum64     = '82aca61c99274fe0a54115176139e52fd79c22b96699fa87fe0b77981b0f46e0'
   ChecksumType64 = 'sha256'
 }
 
 Install-ChocolateyZipPackage @packageArgs
 
 # Rename unzipped folder
-If (Test-Path "$toolsDir\octave-$version-w$osBitness") {
-  Rename-Item -Path "$toolsDir\octave-$version-w$osBitness" -NewName 'octave'
-}
-If (Test-Path "$toolsDir\octave-$version") {
-  Rename-Item -Path "$toolsDir\octave-$version" -NewName 'octave'
+If (Test-Path "$toolsDir\octave-$version-w64") {
+  Rename-Item -Path "$toolsDir\octave-$version-w64" -NewName 'octave'
 }
 
 # Don't create shims for any executables
@@ -35,7 +28,7 @@ foreach ($file in $files) {
 }
 
 # Link batch
-$path = "$progDir\mingw$osBitness\bin\octave.bat"
+$path = "$progDir\mingw64\bin\octave.bat"
 Install-BinFile -Name 'octave'     -Path $path -Command '--gui' -UseStart
 Install-BinFile -Name 'octave-cli' -Path $path -Command '--no-gui'
 
@@ -65,7 +58,7 @@ if ($pp.Count -gt 0) {
   }
 
   if ($paths.Count -gt 0) {
-    $icon   = "$progDir\mingw$osBitness\share\octave\$version\imagelib\octave-logo.ico"
+    $icon   = "$progDir\mingw64\share\octave\$version\imagelib\octave-logo.ico"
     $target = "$progDir\octave.vbs"
 
     $paths.GetEnumerator() | foreach-object {

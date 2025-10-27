@@ -3,21 +3,19 @@
 $toolsPath = Split-Path $MyInvocation.MyCommand.Definition
 
 $packageArgs = @{
-  packageName    = 'tixati.portable'
-  url            = 'https://download2.tixati.com/download/tixati-2.89-1.portable.zip'
-  checksum       = 'fc4a58b2cf18fbe164bcfdd4a3fa8d7af2ee511cdc186e6f98353806bde44bba'
-  checksumType   = 'sha256'
-  unzipLocation  = $toolsPath
+  packageName   = 'tixati.portable'
+  url           = 'https://download.tixati.com/tixati-3.38-1.win32-standalone.zip'
+  checksum      = '9d8f699a467455776eab1fecf156c3bacff0d52afb618c9d6a87c0d09ec0e55c'
+  url64         = 'https://download.tixati.com/tixati-3.38-1.win64-standalone.zip'
+  checksum64    = '14235eda443cffcc622fc9242a48a21f898c3d5cde40bcc66d75804326316eec'
+  checksumType  = 'sha256'
+  unzipLocation = $toolsPath
 }
 Install-ChocolateyZipPackage @packageArgs
 
-$is32bit = (Get-OSArchitectureWidth 32) -or ($Env:chocolateyForceX86 -eq 'true')
-$tixati_path = "$toolsPath\Tixati_portable"
-Remove-Item $tixati_path\tixati_Linux*
-if ($is32bit) {
-    Remove-Item $tixati_path\tixati_Windows64bit.exe
-    Move-Item $tixati_path\tixati_Windows32bit.exe $tixati_path\tixati.exe
-} else {
-    Remove-Item $tixati_path\tixati_Windows32bit.exe
-    Move-Item $tixati_path\tixati_Windows64bit.exe $tixati_path\tixati.exe
+$files = get-childitem $toolsPath -include *.exe -recurse
+foreach ($file in $files) {
+  if ($file.name -ne "tixati.exe") {
+    New-Item "$file.ignore" -type file -force | Out-Null
+  }
 }

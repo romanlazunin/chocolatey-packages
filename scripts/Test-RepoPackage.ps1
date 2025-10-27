@@ -497,21 +497,23 @@ function TestAuUpdatePackages() {
   param(
     $packages
   )
+
   [array]$packageNames = $packages | ? IsAutomatic | select -expand Name
   $packageNames += $packages | ? { $_.DependentPackage -ne $null -and $_.DependentPackage -ne '' } | select -expand DependentPackage
   if (!$packageNames) {
-    WriteOutput "No Automatic packages was found. Skipping AU update test."
+    WriteOutput "No Automatic packages was found. Skipping Chocolatey AU update test."
     return
   }
 
   try {
     pushd "$PSScriptRoot\.."
+    Write-Host "Testing $packageNames"
     .\test_all.ps1 -Name $packageNames -ThrowOnErrors
   } catch {
     SetAppveyorExitCode $LastExitCode
-    throw "An exception ocurred during AU update. Cancelling all other checks."
+    throw "An exception ocurred during Chocolatey AU update. Cancelling all other checks."
   } finally {
-    MoveLogFile -packageName 'au' -commandType 'update'
+    MoveLogFile -packageName 'chocolatey-au' -commandType 'update'
     popd
   }
 }

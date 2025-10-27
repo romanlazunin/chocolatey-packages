@@ -1,4 +1,4 @@
-import-module au
+﻿Import-Module Chocolatey-AU
 
 [uri]$releases = 'https://curl.se/windows/'
 
@@ -6,9 +6,7 @@ function global:au_SearchReplace {
   @{
     ".\legal\VERIFICATION.txt"      = @{
       "(?i)(Go to)\s*[^,]*" = "`${1} $releases"
-      "(?i)(\s+x32:).*"     = "`${1} $($Latest.URL32)"
       "(?i)(\s+x64:).*"     = "`${1} $($Latest.URL64)"
-      "(?i)(checksum32:).*" = "`${1} $($Latest.Checksum32)"
       "(?i)(checksum64:).*" = "`${1} $($Latest.Checksum64)"
     }
 
@@ -17,7 +15,6 @@ function global:au_SearchReplace {
     }
 
     ".\tools\chocolateyInstall.ps1" = @{
-      "(?i)(^\s*FileFullPath\s*=\s*`"`[$]toolsPath\\).*`""   = "`${1}$($Latest.FileName32)`""
       "(?i)(^\s*FileFullPath64\s*=\s*`"`[$]toolsPath\\).*`"" = "`${1}$($Latest.FileName64)`""
     }
   }
@@ -34,14 +31,13 @@ function global:au_GetLatest {
   $download_page = Invoke-WebRequest -Uri $releases -UseBasicParsing
 
   $re = '\.zip'
-  $url = $download_page.links | ? href -match $re | % { [uri]::new($releases, $_.href) }
-  $version = ($url[0] -split '/'  | select -Last 1) -split '(_\d+)?-' | select -Index 1
-  $releaseNotes = $download_page.links | ? href -match "changes\.html" | select -first 1 -expand href
+  $url = $download_page.links | Where-Object href -match $re | ForEach-Object { [uri]::new($releases, $_.href) }
+  $version = ($url[0] -split '/'  | Select-Object -Last 1) -split '(_\d+)?-' | Select-Object -Index 1
+  $releaseNotes = $download_page.links | Where-Object href -match "changes\.html" | Select-Object -first 1 -expand href
 
   @{
     Version      = $version
-    URL32        = $url -match 'win32' | select -first 1
-    URL64        = $url | ? { $_ -notmatch 'win32' -and $_ -match $version } | select -first 1
+    URL64        = $url | Where-Object { $_ -notmatch 'win32' -and $_ -match $version } | Select-Object -first 1
     ReleaseNotes = $releaseNotes
   }
 }

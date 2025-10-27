@@ -1,11 +1,12 @@
-import-module au
+﻿Import-Module Chocolatey-AU
 
 $releases = 'https://files.gpg4win.org/'
 
 function global:au_SearchReplace {
    @{
         ".\tools\chocolateyInstall.ps1" = @{
-            "(?i)(^\s*packageName\s*=\s*)('.*')"  = "`$1'$($Latest.PackageName)'"
+            "(?i)(^\s*packageName\s*=\s*)('.*')"        = "`$1'$($Latest.PackageName)'"
+            "(?i)(^\s*file\s*=\s*`"[$]toolsPath\\).*"   = "`${1}$($Latest.FileName32)`""
         }
 
         ".\legal\VERIFICATION.txt" = @{
@@ -22,10 +23,10 @@ function global:au_GetLatest {
 
     $packageName = Split-Path -Leaf $PSScriptRoot
     $re  = "$packageName-[0-9.]+.exe$"
-    $url = $download_page.links | ? href -match $re | select -Last 1 -Expand href | % { $releases + $_ }
+    $url = $download_page.links | Where-Object href -match $re | Select-Object -Last 1 -Expand href | ForEach-Object { $releases + $_ }
 
     @{
-        Version = $url -split '-|.exe' | select -Last 1 -Skip 1
+        Version = $url -split '-|.exe' | Select-Object -Last 1 -Skip 1
         URL32   = $url
     }
 }

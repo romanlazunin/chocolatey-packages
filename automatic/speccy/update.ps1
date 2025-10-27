@@ -1,6 +1,6 @@
-﻿import-module au
+﻿Import-Module Chocolatey-AU
 
-$releases = 'https://www.ccleaner.com/speccy/download/standard'
+$releases = 'https://www.ccleaner.com/speccy/version-history'
 
 function global:au_SearchReplace {
   @{
@@ -12,17 +12,17 @@ function global:au_SearchReplace {
 }
 
 function global:au_GetLatest {
-  $download_page = Invoke-WebRequest -Uri $releases -UseBasicParsing
-
-  $re = '\.exe(\?[a-f\d]+)?$'
-  $url = $download_page.links | ? href -match $re | select -First 1 -expand href
-
-  $download_page = Invoke-WebRequest https://www.ccleaner.com/speccy/version-history -UseBasicParsing
-  $Matches = $null
-  $download_page.Content -match "\<h6\>v((?:[\d]\.)[\d\.]+)"
+  $downloadPage = Invoke-WebRequest -Uri $releases -UseBasicParsing
+  $downloadPage.Content -match "v((?:[\d]\.)[\d\.]+)\</span\>"
   $version = $Matches[1]
+  $versionParts = $version.Split(".")
 
-  @{ URL32 = $url; Version = $version }
+  $url = "https://download.ccleaner.com/spsetup$($versionParts[0])$($versionParts[1]).exe"
+
+  @{
+    URL32 = $url
+    Version = $version
+  }
 }
 
 update -ChecksumFor 32

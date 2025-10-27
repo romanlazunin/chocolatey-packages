@@ -1,10 +1,7 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param([switch] $Force)
 
-Import-Module AU
-
-$domain   = 'https://github.com'
-$releases = "$domain/kubernetes/kompose/releases/latest"
+Import-Module Chocolatey-AU
 
 function global:au_BeforeUpdate {
   Get-RemoteFiles -Purge -NoSuffix -FileNameBase "kompose"
@@ -22,17 +19,12 @@ function global:au_SearchReplace {
 }
 
 function global:au_GetLatest {
-  $download_page = Invoke-WebRequest -Uri $releases -UseBasicParsing
-
-  $re = '\.exe$'
-  $url = $download_page.links | ? href -match $re | % href | select -First 1
-
-  $version = (Split-Path ( Split-Path $url ) -Leaf).Substring(1)
+  $LatestRelease = Get-GitHubRelease kubernetes kompose
 
   return @{
-    Version     = $version
-    URL64       = $url
-    ReleaseURL  = "$domain/kubernetes/kompose/releases/tag/v${version}"
+    Version     = $LatestRelease.tag_name.TrimStart("v")
+    URL64       = $LatestRelease.assets | Where-Object {$_.name.EndsWith(".exe")} | Select-Object -ExpandProperty browser_download_url
+    ReleaseURL  = $LatestRelease.html_url
   }
 }
 
